@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burger 17 - Pedido Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(255, 107, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px; 
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff6b00;
+        }
+
+        .logo-img {
+            height: 50px; 
+            width: auto;
+            border-radius: 50%; 
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        .menu-section {
+            background: #252525;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            color: #ff0000;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .category {
+            margin-bottom: 30px;
+        }
+
+        .category-title {
+            font-size: 22px;
+            color: #ff0000;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #c52c06fb;
+        }
+
+        .product-item {
+            background: #1a1a1a;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ff0000;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .product-price {
+            font-size: 20px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .product-description {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        
+        .size-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .size-btn {
+            flex: 1;
+            background: #2a2a2a;
+            color: #aaa;
+            border: 2px solid #333;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .size-btn:hover {
+            border-color: #ff6b00;
+        }
+
+        .size-btn.active {
+            background: #ff0000;
+            color: white;
+            border-color: #ff0000;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quantity-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quantity-btn:hover {
+            background: #ff6b00;
+            transform: scale(1.1);
+        }
+
+        .quantity-display {
+            font-size: 18px;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .order-summary {
+            background: #252525;
+            padding: 30px;
+            border-radius: 15px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .cart-items {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            background: #1a1a1a;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delivery-options {
+            margin: 20px 0;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .radio-option {
+            flex: 1;
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            border: 2px solid #333;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: #ff0000;
+        }
+
+        .radio-option.selected {
+            background: #ff0000;
+            border-color: #ff0000;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #ff0000;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .payment-option {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            cursor: pointer;
+            border: 2px solid #333;
+            transition: all 0.3s;
+        }
+
+        .payment-option.selected {
+            border-color: #ff0000;
+            background: #2a2a2a;
+        }
+
+        .alias-box {
+            background: #ffffff;
+            color: #000;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alias-text {
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .total-section {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .total-row.final {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0000;
+            border-top: 2px solid #ff0000;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .finalize-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #ff0000, #ff1e00);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .finalize-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .finalize-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #666;
+            padding: 30px;
+            font-style: italic;
+        }
+
+        #loading-banner {
+            background: linear-gradient(135deg, #ff6b00, #ff8c00);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .order-summary {
+                position: relative;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="loading-banner">⏳ Cargando precios actualizados desde la nube...</div>
+
+<nav>
+    <div class="logo">
+        <img src="https://i.postimg.cc/zVKGLV8W/burger17.png" alt="Logo Burger 17" class="logo-img">
+        <span>BURGER 17</span>
+    </div>
+    
+    <div style="color: #ff0000; font-weight: bold;">PEDIDO ONLINE</div>
+    
+    <button class="quantity-btn" onclick="window.location.href='index.html'" style="width: auto; padding: 0 15px; border-radius: 5px; font-size: 14px; background: #333;">
+        🏠 Volver al inicio
+    </button>
+</nav>
+
+<div class="container">
+    <div class="menu-section">
+        <h2 class="section-title">🍔 Menú</h2>
+
+        <div class="category">
+            <h3 class="category-title">Hamburguesas</h3>
+            
+            
+            <div class="product-item" data-product="super17">
+                <div class="product-header">
+                    <span class="product-name">Super 17</span>
+                    <span class="product-price" id="price-super17">$0</span>
+                </div>
+                <p class="product-description">Cebolla crispy, panceta, mayonesa, ketchup, salsa 17, extra cheddar</p>
+                <div class="size-selector">
+                    <button class="size-btn active" onclick="selectSize('super17', 'simple')">Simple</button>
+                    <button class="size-btn" onclick="selectSize('super17', 'doble')">Doble</button>
+                </div>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('super17', -1)">-</button>
+                    <span class="quantity-display" id="qty-super17">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('super17', 1)">+</button>
+                </div>
+            </div>
+
+            
+            <div class="product-item" data-product="cheddar-stack">
+                <div class="product-header">
+                    <span class="product-name">Cheddar Stack</span>
+                    <span class="product-price" id="price-cheddar-stack">$0</span>
+                </div>
+                <p class="product-description">Lechuga, tomate, cebolla, salsa 17, triple cheddar</p>
+                <div class="size-selector">
+                    <button class="size-btn active" onclick="selectSize('cheddar-stack', 'simple')">Simple</button>
+                    <button class="size-btn" onclick="selectSize('cheddar-stack', 'doble')">Doble</button>
+                </div>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('cheddar-stack', -1)">-</button>
+                    <span class="quantity-display" id="qty-cheddar-stack">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('cheddar-stack', 1)">+</button>
+                </div>
+            </div>
+
+            
+            <div class="product-item" data-product="clasica">
+                <div class="product-header">
+                    <span class="product-name">Clásica</span>
+                    <span class="product-price" id="price-clasica">$0</span>
+                </div>
+                <p class="product-description">Lechuga, tomate, cebolla, cheddar, mayonesa</p>
+                <div class="size-selector">
+                    <button class="size-btn active" onclick="selectSize('clasica', 'simple')">Simple</button>
+                    <button class="size-btn" onclick="selectSize('clasica', 'doble')">Doble</button>
+                </div>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('clasica', -1)">-</button>
+                    <span class="quantity-display" id="qty-clasica">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('clasica', 1)">+</button>
+                </div>
+            </div>
+
+            
+            <div class="product-item" data-product="americana">
+                <div class="product-header">
+                    <span class="product-name">Americana</span>
+                    <span class="product-price" id="price-americana">$0</span>
+                </div>
+                <p class="product-description">Cebolla, cheddar, ketchup, mostaza</p>
+                <div class="size-selector">
+                    <button class="size-btn active" onclick="selectSize('americana', 'simple')">Simple</button>
+                    <button class="size-btn" onclick="selectSize('americana', 'doble')">Doble</button>
+                </div>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('americana', -1)">-</button>
+                    <span class="quantity-display" id="qty-americana">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('americana', 1)">+</button>
+                </div>
+            </div>
+
+            
+            <div class="product-item" data-product="chicken-burger">
+                <div class="product-header">
+                    <span class="product-name">Chicken Burger</span>
+                    <span class="product-price" id="price-chicken-burger">$0</span>
+                </div>
+                <p class="product-description">Pollo, lechuga, tomate, mayonesa</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('chicken-burger', -1)">-</button>
+                    <span class="quantity-display" id="qty-chicken-burger">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('chicken-burger', 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h3 class="category-title">Pollo Frito</h3>
+            
+            <div class="product-item" data-product="nuggets-14">
+                <div class="product-header">
+                    <span class="product-name">Nuggets x14</span>
+                    <span class="product-price" id="price-nuggets-14">$0</span>
+                </div>
+                <p class="product-description">14 nuggets de pollo con salsa BBQ</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('nuggets-14', -1)">-</button>
+                    <span class="quantity-display" id="qty-nuggets-14">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('nuggets-14', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="product-item" data-product="alitas-kentucky">
+                <div class="product-header">
+                    <span class="product-name">Alitas Kentucky x7</span>
+                    <span class="product-price" id="price-alitas-kentucky">$0</span>
+                </div>
+                <p class="product-description">7 alitas con salsa BBQ</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('alitas-kentucky', -1)">-</button>
+                    <span class="quantity-display" id="qty-alitas-kentucky">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('alitas-kentucky', 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h3 class="category-title">Bebidas</h3>
+            
+            <div class="product-item" data-product="pepsi">
+                <div class="product-header">
+                    <span class="product-name">Pepsi 354ml</span>
+                    <span class="product-price" id="price-pepsi">$0</span>
+                </div>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('pepsi', -1)">-</button>
+                    <span class="quantity-display" id="qty-pepsi">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('pepsi', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="product-item" data-product="seven-up">
+                <div class="product-header">
+                    <span class="product-name">Seven Up 354ml</span>
+                    <span class="product-price" id="price-seven-up">$0</span>
+                </div>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('seven-up', -1)">-</button>
+                    <span class="quantity-display" id="qty-seven-up">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('seven-up', 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="category">
+            <h3 class="category-title">🍦 Postres</h3>
+            
+            <div class="product-item" data-product="sundae">
+                <div class="product-header">
+                    <span class="product-name">Sundae</span>
+                    <span class="product-price" id="price-sundae">$0</span>
+                </div>
+                <p class="product-description">Sundae de 3 sabores a elección</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="changeQuantity('sundae', -1)">-</button>
+                    <span class="quantity-display" id="qty-sundae">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity('sundae', 1)">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-summary">
+        <h2 class="section-title">Tu Pedido</h2>
+        <div class="cart-items" id="cart-items">
+            <div class="empty-cart">No hay productos en el carrito</div>
+        </div>
+
+        <div class="delivery-options">
+            <label style="color: #ff8c00; font-weight: bold; display: block; margin-bottom: 10px;">Método de Entrega:</label>
+            <div class="radio-group">
+                <div class="radio-option" id="opt-local" onclick="selectDelivery('local')">🏪 Retiro</div>
+                <div class="radio-option" id="opt-delivery" onclick="selectDelivery('delivery')">🚚 Envío</div>
+            </div>
+
+            <div id="delivery-details" class="hidden">
+                <div class="input-group">
+                    <label>A nombre de:</label>
+                    <input type="text" id="customer-name" placeholder="Tu nombre">
+                </div>
+                <div class="input-group">
+                    <label>Dirección:</label>
+                    <input type="text" id="delivery-address" placeholder="Calle y número">
+                </div>
+            </div>
+        </div>
+
+        <div class="delivery-options">
+            <label style="color: #ff8c00; font-weight: bold; display: block; margin-bottom: 10px;">Método de Pago:</label>
+            <div class="payment-option" id="pay-efectivo" onclick="selectPayment('efectivo')">💵 Efectivo</div>
+            <div class="payment-option" id="pay-transferencia" onclick="selectPayment('transferencia')">💳 Transferencia</div>
+
+            <div id="alias-details" class="hidden">
+                <div class="alias-box">
+                    <span class="alias-text">burger.17</span>
+                    <button onclick="copyAlias()" style="background:#ff0000; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Copiar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="total-section">
+            <div class="total-row"><span>Subtotal:</span><span id="subtotal">$0</span></div>
+            <div class="total-row"><span>Envío:</span><span id="shipping-cost">$0</span></div>
+            <div class="total-row final"><span>TOTAL:</span><span id="total">$0</span></div>
+        </div>
+
+        <button class="finalize-btn" id="finalize-btn" onclick="finalizeOrder()" disabled>Finalizar Pedido</button>
+    </div>
+</div>
+
+<script src="precios.js"></script>
+
+<script>
+    let cart = {};
+    let deliveryMethod = null;
+    let paymentMethod = null;
+    const SHIPPING_COST = 1000;
+    
+    
+    let selectedSizes = {
+        'super17': 'simple',
+        'cheddar-stack': 'simple',
+        'clasica': 'simple',
+        'americana': 'simple'
+    };
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        await loadPrices();
+        document.getElementById('loading-banner').style.display = 'none';
+        updateAllPrices(); 
+    });
+
+   
+    function selectSize(productBase, size) {
+        selectedSizes[productBase] = size;
+        
+        
+        const buttons = document.querySelectorAll(`[data-product="${productBase}"] .size-btn`);
+        buttons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.textContent.toLowerCase() === size) {
+                btn.classList.add('active');
+            }
+        });
+        
+        
+        updateProductPrice(productBase);
+    }
+
+    
+    function updateProductPrice(productBase) {
+        const size = selectedSizes[productBase] || 'simple';
+        const productId = `${productBase}-${size}`;
+        const price = products[productId] ? products[productId].price : 0;
+        const priceElement = document.getElementById(`price-${productBase}`);
+        if (priceElement) {
+            priceElement.textContent = `$${price.toLocaleString('es-AR')}`;
+        }
+    }
+
+    
+    function updateAllPrices() {
+        
+        Object.keys(selectedSizes).forEach(productBase => {
+            updateProductPrice(productBase);
+        });
+        
+        
+        ['chicken-burger', 'nuggets-14', 'alitas-kentucky', 'pepsi', 'seven-up', 'sundae'].forEach(id => {
+            const price = products[id] ? products[id].price : 0;
+            const priceElement = document.getElementById(`price-${id}`);
+            if (priceElement) {
+                priceElement.textContent = `$${price.toLocaleString('es-AR')}`;
+            }
+        });
+    }
+
+    function changeQuantity(productBase, change) {
+        if (!verificarPreciosCargados()) {
+            return;
+        }
+        
+        
+        let productId = productBase;
+        if (selectedSizes[productBase]) {
+            productId = `${productBase}-${selectedSizes[productBase]}`;
+        }
+        
+        if (!cart[productId]) {
+            cart[productId] = { quantity: 0, fullId: productId, size: selectedSizes[productBase] };
+        }
+        
+        cart[productId].quantity = Math.max(0, cart[productId].quantity + change);
+        
+        if (cart[productId].quantity === 0) {
+            delete cart[productId];
+        }
+        
+        updateQuantityDisplay(productBase);
+        updateCart();
+    }
+    
+    function updateQuantityDisplay(productBase) {
+        const qtyDisplay = document.getElementById(`qty-${productBase}`);
+        let totalQty = 0;
+        
+        if (selectedSizes[productBase]) {
+            const simpleQty = cart[`${productBase}-simple`]?.quantity || 0;
+            const dobleQty = cart[`${productBase}-doble`]?.quantity || 0;
+            totalQty = simpleQty + dobleQty;
+        } else {
+            totalQty = cart[productBase]?.quantity || 0;
+        }
+        
+        qtyDisplay.textContent = totalQty;
+    }
+
+    function updateCart() {
+        const cartItemsDiv = document.getElementById('cart-items');
+        if (Object.keys(cart).length === 0) {
+            cartItemsDiv.innerHTML = '<div class="empty-cart">No hay productos en el carrito</div>';
+        } else {
+            let html = '';
+            for (let productId in cart) {
+                const item = cart[productId];
+                const product = products[productId];
+                
+                if (!product || item.quantity === 0) continue;
+                
+                const total = product.price * item.quantity;
+                const displayName = item.size ? `${product.name} (${item.size})` : product.name;
+                
+                html += `<div class="cart-item">
+                    <span>${displayName} (x${item.quantity})</span>
+                    <span class="cart-item-price">${total.toLocaleString()}</span>
+                </div>`;
+            }
+            cartItemsDiv.innerHTML = html || '<div class="empty-cart">No hay productos en el carrito</div>';
+        }
+        updateTotals();
+        checkCanFinalize();
+    }
+
+    function updateTotals() {
+        let subtotal = 0;
+        for (let productId in cart) {
+            const item = cart[productId];
+            const product = products[productId];
+            if (product && item.quantity > 0) {
+                subtotal += product.price * item.quantity;
+            }
+        }
+        const shipping = deliveryMethod === 'delivery' ? SHIPPING_COST : 0;
+        document.getElementById('subtotal').textContent = `${subtotal.toLocaleString()}`;
+        document.getElementById('shipping-cost').textContent = `${shipping.toLocaleString()}`;
+        document.getElementById('total').textContent = `${(subtotal + shipping).toLocaleString()}`;
+    }
+
+    function selectDelivery(method) {
+        deliveryMethod = method;
+        document.getElementById('opt-local').classList.toggle('selected', method === 'local');
+        document.getElementById('opt-delivery').classList.toggle('selected', method === 'delivery');
+        document.getElementById('delivery-details').classList.toggle('hidden', method !== 'delivery');
+        updateTotals();
+        checkCanFinalize();
+    }
+
+    function selectPayment(method) {
+        paymentMethod = method;
+        document.getElementById('pay-efectivo').classList.toggle('selected', method === 'efectivo');
+        document.getElementById('pay-transferencia').classList.toggle('selected', method === 'transferencia');
+        document.getElementById('alias-details').classList.toggle('hidden', method !== 'transferencia');
+        checkCanFinalize();
+    }
+
+    function checkCanFinalize() {
+        const hasItems = Object.keys(cart).length > 0;
+        const infoOk = deliveryMethod !== null && paymentMethod !== null;
+        let deliveryOk = true;
+        if (deliveryMethod === 'delivery') {
+            deliveryOk = document.getElementById('customer-name').value.trim() !== '' && 
+                         document.getElementById('delivery-address').value.trim() !== '';
+        }
+        document.getElementById('finalize-btn').disabled = !(hasItems && infoOk && deliveryOk);
+    }
+
+    function copyAlias() {
+        navigator.clipboard.writeText('burger.17');
+        alert("Alias burger.17 copiado");
+    }
+
+    function finalizeOrder() {
+        let msg = "¡Hola Burger 17! Mi pedido:\n\n";
+        for (let productId in cart) {
+            const item = cart[productId];
+            const product = products[productId];
+            if (product && item.quantity > 0) {
+                const displayName = item.size ? `${product.name} (${item.size})` : product.name;
+                msg += `- ${displayName} (x${item.quantity})\n`;
+            }
+        }
+        msg += `\nTotal: ${document.getElementById('total').textContent}\n`;
+        msg += `Pago: ${paymentMethod === 'efectivo' ? 'Efectivo' : 'Transferencia'}\n`;
+        msg += `Entrega: ${deliveryMethod === 'delivery' ? 'Envío' : 'Retiro'}`;
+        
+        if (deliveryMethod === 'delivery') {
+            msg += `\nNombre: ${document.getElementById('customer-name').value}`;
+            msg += `\nDirección: ${document.getElementById('delivery-address').value}`;
+        }
+        window.open(`https://wa.me/543513296635?text=${encodeURIComponent(msg)}`);
+    }
+
+    document.addEventListener('input', checkCanFinalize);
+</script>
+</body>
+</html>
