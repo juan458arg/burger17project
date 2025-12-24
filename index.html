@@ -694,40 +694,40 @@
     </footer>
 
     <script>
-        // ✅ SISTEMA DE HORARIOS DINÁMICO
+        
         function checkDeliveryStatus() {
-            // Obtener hora actual en Argentina (UTC-3)
+       
             const now = new Date();
             const argTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Argentina/Cordoba' }));
             
-            const day = argTime.getDay(); // 0=Domingo, 1=Lunes, etc.
+            const day = argTime.getDay(); 
             const hour = argTime.getHours();
             const minutes = argTime.getMinutes();
-            const currentTime = hour * 60 + minutes; // Convertir a minutos
+            const currentTime = hour * 60 + minutes; 
             
             let isOpen = false;
             let scheduleText = '';
             
-            // Definir horarios (en minutos desde medianoche)
+            
             const schedules = {
-                // Lunes a Jueves: 12:00-15:00 y 20:00-00:00
+                
                 1: { periods: [[12*60, 15*60], [20*60, 24*60]], text: 'Lun-Jue: 12:00-15:00 | 20:00-00:00' },
                 2: { periods: [[12*60, 15*60], [20*60, 24*60]], text: 'Lun-Jue: 12:00-15:00 | 20:00-00:00' },
                 3: { periods: [[12*60, 15*60], [20*60, 24*60]], text: 'Lun-Jue: 12:00-15:00 | 20:00-00:00' },
                 4: { periods: [[12*60, 15*60], [20*60, 24*60]], text: 'Lun-Jue: 12:00-15:00 | 20:00-00:00' },
                 
-                // Viernes y Sábado: 12:00-15:00 y 20:00-01:00
+                
                 5: { periods: [[12*60, 15*60], [20*60, 25*60]], text: 'Vie-Sab: 12:00-15:00 | 20:00-01:00' },
                 6: { periods: [[12*60, 15*60], [20*60, 25*60]], text: 'Vie-Sab: 12:00-15:00 | 20:00-01:00' },
                 
-                // Domingo: 20:00-00:00
+               
                 0: { periods: [[20*60, 24*60]], text: 'Dom: 20:00-00:00' }
             };
             
             const todaySchedule = schedules[day];
             
             if (todaySchedule) {
-                // Verificar si está dentro de algún período
+               
                 for (let period of todaySchedule.periods) {
                     if (currentTime >= period[0] && currentTime <= period[1]) {
                         isOpen = true;
@@ -737,7 +737,7 @@
                 scheduleText = todaySchedule.text;
             }
             
-            // Actualizar badge de delivery
+           
             const deliveryBadge = document.getElementById('delivery-status');
             if (isOpen) {
                 deliveryBadge.textContent = 'Abierto!';
@@ -749,19 +749,19 @@
                 deliveryBadge.classList.add('delivery-closed');
             }
             
-            // Actualizar texto de horarios
+           
             const fullSchedule = 'Lun-Jue: 12:00-15:00 | 20:00-00:00<br>Vie-Sab: 12:00-15:00 | 20:00-01:00<br>Dom: 20:00-00:00';
             document.getElementById('schedule-info').innerHTML = fullSchedule;
             document.getElementById('footer-schedule').innerHTML = fullSchedule;
         }
         
-        // Ejecutar al cargar la página
+       
         checkDeliveryStatus();
         
-        // Actualizar cada minuto
+       
         setInterval(checkDeliveryStatus, 60000);
         
-        // Funcionalidad del menú desplegable
+       
         document.querySelectorAll('.category-header').forEach(header => {
             header.addEventListener('click', () => {
                 const category = header.parentElement;
@@ -769,7 +769,7 @@
             });
         });
 
-        // Smooth scroll
+       
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
