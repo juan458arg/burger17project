@@ -15,8 +15,10 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #1a1a1a;
             color: #fff;
+            padding-bottom: 20px; /* Espacio al final */
         }
 
+        /* --- NAV / ENCABEZADO --- */
         nav {
             background: rgba(0, 0, 0, 0.95);
             padding: 20px 50px;
@@ -24,6 +26,9 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 20px rgba(255, 107, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
@@ -41,11 +46,13 @@
             border-radius: 50%; 
         }
 
+        /* --- ESTRUCTURA PRINCIPAL --- */
         .container {
             max-width: 1400px;
             margin: 40px auto;
             padding: 0 20px;
             display: grid;
+            /* En PC: 2 columnas (Menú flexible | Pedido fijo de 400px) */
             grid-template-columns: 1fr 400px;
             gap: 30px;
         }
@@ -56,6 +63,18 @@
             border-radius: 15px;
         }
 
+        /* --- PEDIDO (SIDEBAR) --- */
+        .order-summary {
+            background: #252525;
+            padding: 30px;
+            border-radius: 15px;
+            /* En PC: El carrito se queda fijo al bajar */
+            position: sticky;
+            top: 100px; 
+            height: fit-content;
+        }
+
+        /* --- ESTILOS DE TEXTO Y BOTONES --- */
         .section-title {
             font-size: 28px;
             color: #ff0000;
@@ -64,9 +83,7 @@
             letter-spacing: 2px;
         }
 
-        .category {
-            margin-bottom: 30px;
-        }
+        .category { margin-bottom: 30px; }
 
         .category-title {
             font-size: 22px;
@@ -91,28 +108,11 @@
             margin-bottom: 10px;
         }
 
-        .product-name {
-            font-size: 18px;
-            font-weight: bold;
-        }
+        .product-name { font-size: 18px; font-weight: bold; }
+        .product-price { font-size: 20px; color: #ff0000; font-weight: bold; }
+        .product-description { color: #aaa; font-size: 14px; margin-bottom: 15px; }
 
-        .product-price {
-            font-size: 20px;
-            color: #ff0000;
-            font-weight: bold;
-        }
-
-        .product-description {
-            color: #aaa;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .size-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
+        .size-selector { display: flex; gap: 10px; margin-bottom: 15px; }
 
         .size-btn {
             flex: 1;
@@ -127,21 +127,10 @@
             font-size: 14px;
         }
 
-        .size-btn:hover {
-            border-color: #ff6b00;
-        }
+        .size-btn:hover { border-color: #ff6b00; }
+        .size-btn.active { background: #ff0000; color: white; border-color: #ff0000; }
 
-        .size-btn.active {
-            background: #ff0000;
-            color: white;
-            border-color: #ff0000;
-        }
-
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .quantity-control { display: flex; align-items: center; gap: 15px; }
 
         .quantity-btn {
             background: #ff0000;
@@ -155,33 +144,9 @@
             transition: all 0.3s;
         }
 
-        .quantity-btn:hover {
-            background: #ff6b00;
-            transform: scale(1.1);
-        }
+        .quantity-display { font-size: 18px; font-weight: bold; min-width: 30px; text-align: center; }
 
-        .quantity-display {
-            font-size: 18px;
-            font-weight: bold;
-            min-width: 30px;
-            text-align: center;
-        }
-
-        .order-summary {
-            background: #252525;
-            padding: 30px;
-            border-radius: 15px;
-            position: sticky;
-            top: 20px;
-            height: fit-content;
-        }
-
-        .cart-items {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
+        .cart-items { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
         .cart-item {
             background: #1a1a1a;
             padding: 15px;
@@ -192,15 +157,8 @@
             align-items: center;
         }
 
-        .delivery-options {
-            margin: 20px 0;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 15px;
-            margin: 15px 0;
-        }
+        .delivery-options { margin: 20px 0; }
+        .radio-group { display: flex; gap: 15px; margin: 15px 0; }
 
         .radio-option {
             flex: 1;
@@ -212,179 +170,97 @@
             border: 2px solid #333;
             transition: all 0.3s;
         }
+        .radio-option.selected { background: #ff0000; border-color: #ff0000; }
 
-        .radio-option:hover {
-            border-color: #ff0000;
-        }
-
-        .radio-option.selected {
-            background: #ff0000;
-            border-color: #ff0000;
-        }
-
-        .input-group {
-            margin: 15px 0;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #ff0000;
-            font-weight: bold;
-        }
-
+        .input-group { margin: 15px 0; }
+        .input-group label { display: block; margin-bottom: 8px; color: #ff0000; font-weight: bold; }
         .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px;
-            background: #1a1a1a;
-            border: 2px solid #333;
-            border-radius: 8px;
-            color: white;
-            font-size: 14px;
+            width: 100%; padding: 12px; background: #1a1a1a;
+            border: 2px solid #333; border-radius: 8px; color: white; font-size: 14px;
         }
 
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: #ff0000;
-        }
-
-        .hidden {
-            display: none;
-        }
+        .hidden { display: none; }
 
         .payment-option {
-            background: #1a1a1a;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            cursor: pointer;
-            border: 2px solid #333;
-            transition: all 0.3s;
+            background: #1a1a1a; padding: 15px; border-radius: 8px;
+            margin: 10px 0; cursor: pointer; border: 2px solid #333; transition: all 0.3s;
         }
-
-        .payment-option.selected {
-            border-color: #ff0000;
-            background: #2a2a2a;
-        }
+        .payment-option.selected { border-color: #ff0000; background: #2a2a2a; }
 
         .alias-box {
-            background: #ffffff;
-            color: #000;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: #ffffff; color: #000; padding: 15px;
+            border-radius: 8px; margin-top: 10px; display: flex;
+            justify-content: space-between; align-items: center;
         }
-
-        .alias-text {
-            font-size: 20px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
+        .alias-text { font-size: 20px; font-weight: bold; letter-spacing: 1px; }
 
         .total-section {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
+            background: #1a1a1a; padding: 20px; border-radius: 8px; margin: 20px 0;
         }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            font-size: 16px;
-        }
-
+        .total-row { display: flex; justify-content: space-between; margin: 10px 0; font-size: 16px; }
         .total-row.final {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff0000;
-            border-top: 2px solid #ff0000;
-            padding-top: 15px;
-            margin-top: 15px;
+            font-size: 24px; font-weight: bold; color: #ff0000;
+            border-top: 2px solid #ff0000; padding-top: 15px; margin-top: 15px;
         }
 
         .finalize-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #ff0000, #ff1e00);
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            width: 100%; background: linear-gradient(135deg, #ff0000, #ff1e00);
+            color: white; border: none; padding: 18px; border-radius: 10px;
+            font-size: 18px; font-weight: bold; cursor: pointer;
+            transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
         }
+        .finalize-btn:disabled { background: #555; cursor: not-allowed; }
 
-        .finalize-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.5);
-        }
-
-        .finalize-btn:disabled {
-            background: #555;
-            cursor: not-allowed;
-        }
-
-        .empty-cart {
-            text-align: center;
-            color: #666;
-            padding: 30px;
-            font-style: italic;
-        }
+        .empty-cart { text-align: center; color: #666; padding: 30px; font-style: italic; }
 
         #loading-banner {
             background: linear-gradient(135deg, #ff6b00, #ff8c00);
-            color: white;
-            text-align: center;
-            padding: 12px;
-            font-weight: bold;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 9999;
+            color: white; text-align: center; padding: 12px; font-weight: bold;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        @media (max-width: 768px) {
-            nav {
-                flex-direction: column; 
-                gap: 10px; 
-                padding: 15px; 
-            }
-
-            .logo {
-                font-size: 24px; 
-                justify-content: center; 
-                width: 100%;
-            }
-
-            .logo-img {
-                height: 40px; 
-            }
-
-           
-            nav > div:nth-of-type(1) { 
-                margin: 5px 0;
-                font-size: 14px;
-            }
-
+        /* 📱📱📱 ESTA ES LA PARTE IMPORTANTE PARA CELULARES 📱📱📱 */
+        @media (max-width: 900px) {
             
-            nav button.quantity-btn {
-                width: 100%; 
-                margin: 0;
+            /* Arreglo del encabezado */
+            nav {
+                flex-direction: column; /* Pone los elementos verticales */
+                gap: 15px;
+                padding: 15px;
+            }
+            .logo { width: 100%; justify-content: center; }
+            nav > div { text-align: center; margin: 5px 0; }
+            nav .quantity-btn { width: 100%; margin-top: 5px; }
+
+            /* Arreglo del cuerpo: Todo en UNA sola columna */
+            .container {
+                grid-template-columns: 1fr; /* Una columna que ocupa todo */
                 padding: 10px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 10px;
+                margin-top: 20px;
+                gap: 20px;
+            }
+
+            /* Arreglo de la sección "Tu Pedido" */
+            .order-summary {
+                position: relative; /* Ya no es 'sticky' (fijo) */
+                top: 0;
+                order: 2; /* Asegura que vaya abajo (aunque por HTML ya va abajo) */
+            }
+
+            /* Ajustes menores de tamaños */
+            .menu-section, .order-summary {
+                padding: 20px; /* Menos relleno para ganar espacio */
+            }
+            
+            .product-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .product-price {
+                align-self: flex-end; /* Precio a la derecha */
             }
         }
     </style>
