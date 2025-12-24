@@ -365,7 +365,7 @@
     </style>
 </head>
 <body>
-<div id="loading-banner">⏳ Cargando precios actualizados desde la nube...</div>
+<div id="loading-banner">⏳ Cargando </div>
 
 <nav>
     <div class="logo">
@@ -473,29 +473,47 @@
                 </div>
             </div>
         </div>
+        <div class="product-item" data-product="burger-junior">
+    <div class="product-header">
+        <span class="product-name">Burger Junior</span>
+        <span class="product-price" id="price-burger-junior">$0</span>
+    </div>
+    <p class="product-description">Hamburguesa con queso cheddar y aderezos (ideal niños)</p>
+    <div class="quantity-control">
+        <button class="quantity-btn" onclick="changeQuantity('burger-junior', -1)">-</button>
+        <span class="quantity-display" id="qty-burger-junior">0</span>
+        <button class="quantity-btn" onclick="changeQuantity('burger-junior', 1)">+</button>
+    </div>
+</div>
 
         <div class="category">
             <h3 class="category-title">Pollo Frito</h3>
             
-            <div class="product-item" data-product="nuggets-14">
-                <div class="product-header">
-                    <span class="product-name">Nuggets x14</span>
-                    <span class="product-price" id="price-nuggets-14">$0</span>
-                </div>
-                <p class="product-description">14 nuggets de pollo con salsa BBQ</p>
-                <div class="quantity-control">
-                    <button class="quantity-btn" onclick="changeQuantity('nuggets-14', -1)">-</button>
-                    <span class="quantity-display" id="qty-nuggets-14">0</span>
-                    <button class="quantity-btn" onclick="changeQuantity('nuggets-14', 1)">+</button>
-                </div>
-            </div>
+<div class="product-item" data-product="nuggets">
+    <div class="product-header">
+        <span class="product-name">Nuggets de Pollo</span>
+        <span class="product-price" id="price-nuggets">$0</span>
+    </div>
+    <p class="product-description">Nuggets de pechuga de pollo con salsa BBQ</p>
+    
+    <div class="size-selector">
+        <button class="size-btn active" onclick="selectSize('nuggets', '10')">x10</button>
+        <button class="size-btn" onclick="selectSize('nuggets', '14')">x14</button>
+    </div>
+
+    <div class="quantity-control">
+        <button class="quantity-btn" onclick="changeQuantity('nuggets', -1)">-</button>
+        <span class="quantity-display" id="qty-nuggets">0</span>
+        <button class="quantity-btn" onclick="changeQuantity('nuggets', 1)">+</button>
+    </div>
+</div>
 
             <div class="product-item" data-product="alitas-kentucky">
                 <div class="product-header">
-                    <span class="product-name">Alitas Kentucky x7</span>
+                    <span class="product-name">Alitas Kentucky x8</span>
                     <span class="product-price" id="price-alitas-kentucky">$0</span>
                 </div>
-                <p class="product-description">7 alitas con salsa BBQ</p>
+                <p class="product-description">8 alitas con salsa BBQ</p>
                 <div class="quantity-control">
                     <button class="quantity-btn" onclick="changeQuantity('alitas-kentucky', -1)">-</button>
                     <span class="quantity-display" id="qty-alitas-kentucky">0</span>
@@ -534,7 +552,7 @@
 
         
         <div class="category">
-            <h3 class="category-title">🍦 Postres</h3>
+            <h3 class="category-title"> Postres</h3>
             
             <div class="product-item" data-product="sundae">
                 <div class="product-header">
@@ -583,7 +601,7 @@
 
             <div id="alias-details" class="hidden">
                 <div class="alias-box">
-                    <span class="alias-text">burger.17</span>
+                     <h3> alias:</h3><span class="alias-text">burger.17</span>
                     <button onclick="copyAlias()" style="background:#ff0000; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Copiar</button>
                 </div>
             </div>
@@ -612,7 +630,8 @@
         'super17': 'simple',
         'cheddar-stack': 'simple',
         'clasica': 'simple',
-        'americana': 'simple'
+        'americana': 'simple',
+        'nuggets': '10'
     };
 
     window.addEventListener('DOMContentLoaded', async () => {
@@ -655,9 +674,9 @@
         Object.keys(selectedSizes).forEach(productBase => {
             updateProductPrice(productBase);
         });
-        
-        
-        ['chicken-burger', 'nuggets-14', 'alitas-kentucky', 'pepsi', 'seven-up', 'sundae'].forEach(id => {
+
+
+        ['burger-junior', 'chicken-burger', 'alitas-kentucky', 'pepsi', 'seven-up', 'sundae'].forEach(id => {
             const price = products[id] ? products[id].price : 0;
             const priceElement = document.getElementById(`price-${id}`);
             if (priceElement) {
@@ -695,15 +714,25 @@
         const qtyDisplay = document.getElementById(`qty-${productBase}`);
         let totalQty = 0;
         
-        if (selectedSizes[productBase]) {
+        if (productBase === 'nuggets') {
+            
+            const qty10 = cart['nuggets-10']?.quantity || 0;
+            const qty14 = cart['nuggets-14']?.quantity || 0;
+            totalQty = qty10 + qty14;
+        } 
+        else if (selectedSizes[productBase]) {
+            
             const simpleQty = cart[`${productBase}-simple`]?.quantity || 0;
             const dobleQty = cart[`${productBase}-doble`]?.quantity || 0;
             totalQty = simpleQty + dobleQty;
         } else {
+           
             totalQty = cart[productBase]?.quantity || 0;
         }
         
-        qtyDisplay.textContent = totalQty;
+        if (qtyDisplay) {
+            qtyDisplay.textContent = totalQty;
+        }
     }
 
     function updateCart() {
@@ -780,26 +809,41 @@
         alert("Alias burger.17 copiado");
     }
 
-    function finalizeOrder() {
-        let msg = "¡Hola Burger 17! Mi pedido:\n\n";
-        for (let productId in cart) {
-            const item = cart[productId];
-            const product = products[productId];
-            if (product && item.quantity > 0) {
-                const displayName = item.size ? `${product.name} (${item.size})` : product.name;
-                msg += `- ${displayName} (x${item.quantity})\n`;
-            }
-        }
-        msg += `\nTotal: ${document.getElementById('total').textContent}\n`;
-        msg += `Pago: ${paymentMethod === 'efectivo' ? 'Efectivo' : 'Transferencia'}\n`;
-        msg += `Entrega: ${deliveryMethod === 'delivery' ? 'Envío' : 'Retiro'}`;
+function finalizeOrder() {
+    let msg = "¡Hola Burger 17! Mi pedido:\n\n";
+    
+    // 1. Lista de Productos con Precios
+    for (let productId in cart) {
+        const item = cart[productId];
+        const product = products[productId];
         
-        if (deliveryMethod === 'delivery') {
-            msg += `\nNombre: ${document.getElementById('customer-name').value}`;
-            msg += `\nDirección: ${document.getElementById('delivery-address').value}`;
+        if (product && item.quantity > 0) {
+            // Calculamos el precio total de este ítem (Precio x Cantidad)
+            const itemTotal = product.price * item.quantity;
+            
+            const displayName = item.size ? `${product.name} (${item.size})` : product.name;
+            
+            // Agregamos el precio al final de la línea
+            msg += `- ${displayName} (x${item.quantity}) $${itemTotal.toLocaleString('es-AR')}\n`;
         }
-        window.open(`https://wa.me/543513296635?text=${encodeURIComponent(msg)}`);
     }
+
+    // 2. Datos de Pago y Entrega
+    msg += `\nPago: ${paymentMethod === 'efectivo' ? 'Efectivo' : 'Transferencia'}\n`;
+    msg += `Entrega: ${deliveryMethod === 'delivery' ? 'Envío' : 'Retiro'}`;
+    
+    // 3. Datos del Cliente
+    if (deliveryMethod === 'delivery') {
+        msg += `\nNombre: ${document.getElementById('customer-name').value}`;
+        msg += `\nDirección: ${document.getElementById('delivery-address').value}`;
+    }
+
+    // 4. TOTAL FINAL
+    msg += `\n\n*TOTAL: $${document.getElementById('total').textContent}*`;
+
+    // 5. Enviar a WhatsApp
+    window.open(`https://wa.me/543513296635?text=${encodeURIComponent(msg)}`);
+}
 
     document.addEventListener('input', checkCanFinalize);
 </script>
