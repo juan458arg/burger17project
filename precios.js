@@ -16,13 +16,13 @@ let products = {
     'cheddar-stack-doble': { name: 'Cheddar Stack', price: 0 },
     'clasica-doble': { name: 'Clásica', price: 0 },
     'americana-doble': { name: 'Americana', price: 0 },
-    
-    
+    'burger-junior': { name: 'Burger Junior', price: 0 },
     'chicken-burger': { name: 'Chicken Burger', price: 0 },
     
     
+    'nuggets-10': { name: 'Nuggets x10', price: 0 },
     'nuggets-14': { name: 'Nuggets x14', price: 0 },
-    'alitas-kentucky': { name: 'Alitas Kentucky x7', price: 0 },
+    'alitas-kentucky': { name: 'Alitas Kentucky x8', price: 0 },
     
     
     'pepsi': { name: 'Pepsi 354ml', price: 0 },
